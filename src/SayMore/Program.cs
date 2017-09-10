@@ -362,11 +362,19 @@ namespace SayMore
 		public static void ArchiveProjectUsingIMDI(Form parentForm)
 		{
 			// SP-767: some project changes not being saved before archiving
-			SaveProjectMetadata();
+			SaveProjectMetadata(); // CMDI: Creates 'proj.sprj' file, includes IMDIOutputDirectory
 			_projectContext.Project.ArchiveProjectUsingIMDI(parentForm);
 		}
 
-		public static List<XmlException> FileLoadErrors
+        /// ------------------------------------------------------------------------------------
+        public static void ArchiveProjectUsingCMDI(Form parentForm)
+        {
+            // SP-767: some project changes not being saved before archiving
+            SaveProjectMetadata(); // CMDI: Creates 'proj.sprj' file, includes IMDIOutputDirectory
+            _projectContext.Project.ArchiveProjectUsingCMDI(parentForm);
+        }
+
+        public static List<XmlException> FileLoadErrors
 		{
 			get 
 			{

@@ -239,12 +239,21 @@ namespace SayMore.UI.ProjectWindow
 		/// ------------------------------------------------------------------------------------
 		private void HandleArchiveProjectMenuItemClick(object sender, EventArgs e)
 		{
+            // CMDI: Called on clicking 'Archive as IMDI'
 			Program.ArchiveProjectUsingIMDI(this);
 			ReportAnyFileLoadErrors();
 		}
 
-		/// ------------------------------------------------------------------------------------
-		private void ReportAnyFileLoadErrors()
+        /// ------------------------------------------------------------------------------------
+        private void HandleCMDIArchiveProjectMenuItemClick(object sender, EventArgs e)
+        {
+            // CMDI: Called on clicking 'Archive as CMDI'
+            Program.ArchiveProjectUsingCMDI(this);
+            ReportAnyFileLoadErrors();
+        }
+
+        /// ------------------------------------------------------------------------------------
+        private void ReportAnyFileLoadErrors()
 		{
 			var loadErrors = Program.FileLoadErrors;
 			if (loadErrors.Any())

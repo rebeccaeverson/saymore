@@ -19,6 +19,7 @@ using SayMore.UI.Overview;
 using SIL.Archiving;
 using SIL.Archiving.Generic;
 using SIL.Archiving.IMDI;
+using SIL.Archiving.CMDI;
 using SayMore.Properties;
 using SayMore.Transcription.Model;
 using SayMore.Model.Files;
@@ -33,7 +34,7 @@ namespace SayMore.Model
 	/// people, and another of sessions.
 	/// </summary>
 	/// ----------------------------------------------------------------------------------------
-	public class Project : IAutoSegmenterSettings, IIMDIArchivable, IDisposable
+	public class Project : IAutoSegmenterSettings, IIMDIArchivable, ICMDIArchivable, IDisposable
 	{
 		private ElementRepository<Session>.Factory _sessionsRepoFactory;
 		private readonly SessionFileType _sessionFileType;
@@ -276,8 +277,9 @@ namespace SayMore.Model
 			project.Add(new XElement("RightsHolder", RightsHolder.NullTrim()));
 			project.Add(new XElement("Depositor", Depositor.NullTrim()));
 			project.Add(new XElement("IMDIOutputDirectory", IMDIOutputDirectory.NullTrim()));
+            project.Add(new XElement("CMDIOutputDirectory", CMDIOutputDirectory.NullTrim()));
 
-			int retryCount = 1;
+            int retryCount = 1;
 			Exception error;
 			do
 			{
@@ -383,7 +385,8 @@ namespace SayMore.Model
 			Depositor = GetStringSettingValue(project, "Depositor", string.Empty);
 
 			IMDIOutputDirectory = GetStringSettingValue(project, "IMDIOutputDirectory", string.Empty);
-		}
+            CMDIOutputDirectory = GetStringSettingValue(project, "CMDIOutputDirectory", string.Empty);
+        }
 
 		/// ------------------------------------------------------------------------------------
 		private string GetStringSettingValue(XElement project, string elementName, string defaultValue)
@@ -518,8 +521,11 @@ namespace SayMore.Model
 		/// ------------------------------------------------------------------------------------
 		public string IMDIOutputDirectory { get; set; }
 
-		/// ------------------------------------------------------------------------------------
-		public string AccessProtocol
+        /// ------------------------------------------------------------------------------------
+        public string CMDIOutputDirectory { get; set; }
+
+        /// ------------------------------------------------------------------------------------
+        public string AccessProtocol
 		{
 			get { return _accessProtocol; }
 			set
@@ -544,8 +550,16 @@ namespace SayMore.Model
 			ArchivingHelper.SetIMDIMetadataToArchive(this, model);
 		}
 
-		/// ------------------------------------------------------------------------------------
-		private void DisplayInitialArchiveSummary(IDictionary<string, Tuple<IEnumerable<string>, string>> fileLists, ArchivingDlgViewModel model)
+        /// ------------------------------------------------------------------------------------
+        public void InitializeModel(CMDIArchivingDlgViewModel model)
+        {
+            //Set project metadata here.
+            model.OverrideDisplayInitialSummary = fileLists => DisplayInitialArchiveSummary(fileLists, model);
+            ArchivingHelper.SetCMDIMetadataToArchive(this, model);
+        }
+
+        /// ------------------------------------------------------------------------------------
+        private void DisplayInitialArchiveSummary(IDictionary<string, Tuple<IEnumerable<string>, string>> fileLists, ArchivingDlgViewModel model)
 		{
 			foreach (var message in model.AdditionalMessages)
 				model.DisplayMessage(message.Key + "\n", message.Value);
@@ -589,8 +603,16 @@ namespace SayMore.Model
 			ArchivingHelper.ArchiveUsingIMDI(this);
 		}
 
-		/// ------------------------------------------------------------------------------------
-		public void SetFilesToArchive(ArchivingDlgViewModel model)
+        /// ------------------------------------------------------------------------------------
+        internal void ArchiveProjectUsingCMDI(Form parentForm)
+        {
+            Analytics.Track("Archive Project using CMDI");
+
+            ArchivingHelper.ArchiveUsingCMDI(this);
+        }
+
+        /// ------------------------------------------------------------------------------------
+        public void SetFilesToArchive(ArchivingDlgViewModel model)
 		{
 			Dictionary<string, HashSet<string>> contributorFiles = new Dictionary<string, HashSet<string>>();
 			Type archiveType = model.GetType();

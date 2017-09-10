@@ -26,7 +26,8 @@ namespace SayMore.UI.ProjectWindow
 			this._menuExportSessions = new System.Windows.Forms.ToolStripMenuItem();
 			this._menuExportPeople = new System.Windows.Forms.ToolStripMenuItem();
 			this.archiveIMDIProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this._toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.archiveCMDIProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this._menuChangeUILanguage = new System.Windows.Forms.ToolStripMenuItem();
 			this._menuShowMPlayerDebugWindow = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
@@ -70,6 +71,7 @@ namespace SayMore.UI.ProjectWindow
             this._menuExportSessions,
             this._menuExportPeople,
             this.archiveIMDIProjectToolStripMenuItem,
+            this.archiveCMDIProjectToolStripMenuItem,
             this._toolStripSeparator1,
             this._menuChangeUILanguage,
             this._menuShowMPlayerDebugWindow,
@@ -130,10 +132,20 @@ namespace SayMore.UI.ProjectWindow
 			this.archiveIMDIProjectToolStripMenuItem.Size = new System.Drawing.Size(254, 22);
 			this.archiveIMDIProjectToolStripMenuItem.Text = "&Archive using IMDI...";
 			this.archiveIMDIProjectToolStripMenuItem.Click += new System.EventHandler(this.HandleArchiveProjectMenuItemClick);
-			// 
-			// _toolStripSeparator1
-			// 
-			this._toolStripSeparator1.Name = "_toolStripSeparator1";
+            // 
+            // archiveCMDIProjectToolStripMenuItem
+            // 
+            this.locExtender.SetLocalizableToolTip(this.archiveCMDIProjectToolStripMenuItem, null);
+            this.locExtender.SetLocalizationComment(this.archiveCMDIProjectToolStripMenuItem, null);
+            this.locExtender.SetLocalizingId(this.archiveCMDIProjectToolStripMenuItem, "ProjectWindow.archiveUsingCMDIToolStripMenuItem");
+            this.archiveCMDIProjectToolStripMenuItem.Name = "archiveCMDIProjectToolStripMenuItem";
+            this.archiveCMDIProjectToolStripMenuItem.Size = new System.Drawing.Size(254, 22);
+            this.archiveCMDIProjectToolStripMenuItem.Text = "&Archive using CMDI...";
+            this.archiveCMDIProjectToolStripMenuItem.Click += new System.EventHandler(this.HandleCMDIArchiveProjectMenuItemClick);
+            // 
+            // _toolStripSeparator1
+            // 
+            this._toolStripSeparator1.Name = "_toolStripSeparator1";
 			this._toolStripSeparator1.Size = new System.Drawing.Size(251, 6);
 			// 
 			// _menuChangeUILanguage
@@ -279,6 +291,7 @@ namespace SayMore.UI.ProjectWindow
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem _menuShowMPlayerDebugWindow;
 		private System.Windows.Forms.ToolStripMenuItem archiveIMDIProjectToolStripMenuItem;
-	}
+        private System.Windows.Forms.ToolStripMenuItem archiveCMDIProjectToolStripMenuItem;
+    }
 }
 

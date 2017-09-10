@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -129,20 +128,8 @@ namespace SayMore.UI.ElementListScreen
 			if (index >= 0 && index < _items.Count())
 			{
 				var forceRowChangeEvent = (CurrentCellAddress.Y == index);
-				// PG-136, PG-1801, PG-1814: Since this grid is in row-select mode, it doesn't really matter
-				// which column gets selected, but it can't be one that is hidden.
-				var columnIndex = CurrentCellAddress.X;
-				if (FirstDisplayedCell != null)
-					columnIndex = FirstDisplayedCell.ColumnIndex;
-				Debug.Assert(columnIndex >= 0, "Either all columnns are hidden (which should be impossible), or else this is in unit tests maybe.");
-				if (columnIndex < 0)
-				{
-					// This should fix things up for unit tests on TeamCity (where there is no display so no column is
-					// "visible"), but if this ever happens in production, we will get a crash with the message:
-					// "Current cell cannot be set to an invisible cell".
-					columnIndex = 0;
-				}
-				CurrentCell = this[columnIndex, index];
+				// Since this grid is in row-select mode, it doesn't really matter which column gets selected.
+				CurrentCell = this[0, index];
 				Rows[index].Selected = true;
 				if (forceRowChangeEvent)
 					OnCurrentRowChanged(EventArgs.Empty);
